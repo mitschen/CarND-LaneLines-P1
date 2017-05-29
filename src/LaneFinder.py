@@ -19,8 +19,8 @@ import cv2
 
 class LaneFinder(object):
     def __init__(self, mpimage):
-        self.img = mpimage;
-        self.laneImg = mpimage
+        self.img =  cv2.cvtColor(mpimage, cv2.COLOR_RGBA2RGB);
+        self.laneImg = self.img
         self.imgDepth = None
     
     def show(self):
@@ -75,7 +75,6 @@ class LaneFinder(object):
         for line in lines:
             for x1, y1, x2, y2 in line:
                 m = (y2-y1)/(x2-x1)
-                print (m)
                 if m<0:
                     m1.append(m)
                     b1.append(y1-m*x1)
@@ -93,19 +92,15 @@ class LaneFinder(object):
         ysize = self.img.shape[0]
         if(not np.isnan(m1)):
             lines.append( [(ysize-b1)/m1, ysize, (ysize/10*6-b1)/m1, ysize/10*6] )
-        else:
-            print("KACKE", m1)
         if( not np.isnan(m2)):
             lines.append([(ysize-b2)/m2, ysize, (ysize/10*6-b2)/m2, ysize/10*6])
-        else:
-            print("KACKE", m2)
             
         #bring it into format    
         lines = np.array(lines, dtype=np.int32).reshape(-1,1,4);
         
         return lines
         
-    def applyHughTransformation(self):
+    def applyHoughTransformation(self):
         rho = 2 # distance resolution in pixels of the Hough grid
         theta = 1 * np.pi/180 # angular resolution in radians of the Hough grid
         threshold = 15     # minimum number of votes (intersections in Hough grid cell)
@@ -141,7 +136,7 @@ class LaneFinder(object):
         finder.stripViewport()
         #contains a angle based filtering 
         #as well as a mapping from all line-stretches to a single line
-        finder.applyHughTransformation()
+        finder.applyHoughTransformation()
         finder.highlightLanes()
         return finder.img
 
