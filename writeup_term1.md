@@ -11,11 +11,6 @@ The goals / steps of this project are the following:
 * Reflect on your work in a written report
 
 
-[//]: # (Image References)
-
-[image1]: ./examples/grayscale.jpg "Grayscale"
-[image_flow]: ./flowchart.png "Flowchart"
-
 ---
 
 ### Reflection
@@ -28,7 +23,9 @@ By applying the LaneFinder.findLanes on a sequence of images a complete video cl
 
 ##Processing steps (the pipeline)
 The pipeline of the LaneFinder contains 5 steps. As you can see in the flowchart, two of these steps are more or less implicit called during the HoughLines extraction.
-![alt text][image_flow]
+
+![flowChart](P:\Dokumente\Udacity\SelfDriving\term1\CarND-Term1-Source\CarND-LaneLines-P1\flowChart.png)
+
 
 In principle the LaneFinder starts with the convertion of the image into a grayscale image. The result is stored in the internal member so that at any given time the original imgaes stays as it is. The reason for converting the image into grayscale is that it allows a more simpler and faster criteria for the following edge detection by simply reducing the number of colors and therefore the degrees of freedom. For the CannyEdge dectection we've chosen the threshold between 50 and 150. The extraced edged are stored again inside the working copy of the original image. As the next step, we strip the image to the relevant part - this is done by applying a polygon mask in shape of a trapeze to the internal working copy. 
 
